@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_expense_sheet_form_zgastos" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.form.zgastos</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group/group[2]/field[@name='user_id']" position="after">
+                <field name="zg_report_date" readonly="state != 'draft'"/>
+                <field name="zg_kms_traveled" readonly="state != 'draft'"/>
+                <field name="zg_has_lunch" widget="boolean_toggle" readonly="state != 'draft'"/>
+                <field name="zg_lunch_place"
+                       invisible="not zg_has_lunch"
+                       required="zg_has_lunch"
+                       readonly="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_expense_sheet_tree_zgastos" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.list.zgastos</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='employee_id']" position="after">
+                <field name="zg_report_date" readonly="state != 'draft'"/>
+                <field name="zg_kms_traveled" optional="show" readonly="state != 'draft'"/>
+                <field name="zg_has_lunch" optional="show" readonly="state != 'draft'"/>
+                <field name="zg_lunch_place" optional="hide" readonly="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_expense_sheet_view_search_zgastos" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.search.zgastos</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_sheet_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='accounting_date']" position="after">
+                <field name="zg_report_date"/>
+            </xpath>
+            <xpath expr="//filter[@name='filter_accounting_date']" position="after">
+                <filter string="Fecha de Jornada"
+                        name="filter_zg_report_date"
+                        date="zg_report_date"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
